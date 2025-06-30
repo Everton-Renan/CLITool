@@ -1,0 +1,39 @@
+1. Criar projetos padrão
+	Cria pastas e arquivos já preenchidos
+	Linguagens: Python, PHP, C.
+	Python:
+		if __name__ == "__main__":
+			print("Hello World")
+
+	PHP:
+		<?php
+			echo "Hello World";
+		?>
+
+	C:
+		#include <stdio.h>
+
+		int main(void)
+		{
+			printf("Hello World\n");
+		}
+
+2. Busca e abertura de projetos
+	envia o nome do projeto e ele é aberto no VSCode ou VS2022
+
+3. Mostra as estatisticas do projeto
+	Total de arquivos por linguagem
+
+	Total de linhas
+
+	Último arquivo modificado
+
+	Tamanho do projeto
+
+4. Cria um ambiente virtual python ou sobe um servidor php
+	Python: cria um venv e instala dependencias caso haja um arquivo requirements.txt
+	PHP: php -S localhost:8000
+
+Escolha do diretorio.
+	ele sempre ira executar em um diretorio fixo que o usuario escolheu,
+	mas pode ser alterado para outro usando o cd
