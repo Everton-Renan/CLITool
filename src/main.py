@@ -1,17 +1,17 @@
-
-import argparse
-from pathlib import Path
 import os
-import sys
+from pathlib import Path
 from tkinter.filedialog import askdirectory
 
 INPUT_COLOR = '\033[32m'
 ERROR_COLOR = '\033[31m'
 RESET_COLOR = '\033[0m'
 OUTPUT_COLOR = '\033[34m'
+LANGUAGES = ["python", "php", "c"]
+
 
 class Menu:
     def create(self):
+        os.system("cls")
         print("[1] - Create Project")
         print("[2] - Search Project")
         print("[3] - Status")
@@ -22,20 +22,80 @@ class Menu:
         option = " "
 
         while option not in "1234" and option not in "99":
-            option = input(": ")
+            option = input(f"{INPUT_COLOR}: {RESET_COLOR}")
 
         return option
 
+    def select_option(self, option: str):
+        if option == "1":
+            create_project = CreateProject()
+            create_project.create()
+
+
 class CreateProject:
-   def __init__(self, lang, name):
-        self.lang = lang
-        self.name = name
+    def create(self):
+        os.system("cls")
 
-   def create(self):
-        if self.lang == "python":
-            path = Path().parent / f"{self.name}" / "src"
+        while True:
+            print("Create Project")
+            print("Please provide the programming language and project name.")
+            print("[99] - Exit")
+            answer = input(f"{INPUT_COLOR}: {RESET_COLOR}").lower()
+            print(f"{answer}")
+
+            if answer == "99":
+                return
+
+            result = self.run(answer)
+            os.system("cls")
+            print(f"{OUTPUT_COLOR}{result}{RESET_COLOR}")
+
+    def run(self, answer: str) -> str:
+        try:
+            lang = answer.split()[0]
+            name = answer.split()[1]
+        except IndexError:
+            return "Missing programming language or project name."
+
+        if lang not in LANGUAGES:
+            return "Unsupported programming language."
+
+        path = Path().parent / "ignore" / "testes" / f"{name}" / "src"
+
+        if Path(path).exists():
+            return "A project with this name already exists."
+
+        if lang == "python":
             os.makedirs(path)
+            with open(f"{path}/main.py", "w", encoding="utf8") as file:
+                file.write("""if __name__ == "__main__":
+    print("Hello World!")
+""")
+                file.close()
+            return "Project created successfully."
 
+        elif lang == "php":
+            os.makedirs(path)
+            with open(f"{path}/main.php", "w", encoding="utf8") as file:
+                file.write("""<?php
+echo "Hello World!";
+?>""")
+                file.close()
+            return "Project created successfully."
+
+        elif lang == "c":
+            os.makedirs(path)
+            with open(f"{path}/main.c", "w", encoding="utf8") as file:
+                file.write("""#include <stdio.h>
+
+int main(int argc, char *argv[])
+{
+    printf("Hello World\\n");
+}""")
+                file.close()
+            return "Project created successfully."
+
+        return "An error occurred. Please restart CLITool."
 
 
 if __name__ == "__main__":
@@ -43,9 +103,7 @@ if __name__ == "__main__":
         menu = Menu()
         menu.create()
         option = menu.get_option()
-
-        create_project = CreateProject("python", "CLITool")
-        create_project.create()
+        menu.select_option(option)
 
         if option == "99":
             break
