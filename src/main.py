@@ -60,7 +60,7 @@ class CreateProject:
         if lang not in LANGUAGES:
             return "Unsupported programming language."
 
-        path = Path().parent / "ignore" / "testes" / f"{name}" / "src"
+        path = Path().parent / f"{name}" / "src"
 
         if Path(path).exists():
             return "A project with this name already exists."
