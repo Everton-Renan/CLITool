@@ -1,5 +1,5 @@
-1. Criar projetos padrão
-	Cria pastas e arquivos já preenchidos
+1. Criar projetos padrï¿½o
+	Cria pastas e arquivos jï¿½ preenchidos
 	Linguagens: Python, PHP, C.
 	Python:
 		if __name__ == "__main__":
@@ -19,18 +19,9 @@
 		}
 
 2. Busca e abertura de projetos
-	envia o nome do projeto e ele é aberto no VSCode ou VS2022
+	envia o nome do projeto e ele ï¿½ aberto no VSCode ou VS2022
 
-3. Mostra as estatisticas do projeto
-	Total de arquivos por linguagem
-
-	Total de linhas
-
-	Último arquivo modificado
-
-	Tamanho do projeto
-
-4. Cria um ambiente virtual python ou sobe um servidor php
+3. Cria um ambiente virtual python ou sobe um servidor php
 	Python: cria um venv e instala dependencias caso haja um arquivo requirements.txt
 	PHP: php -S localhost:8000
 
