@@ -14,8 +14,7 @@ class Menu:
         os.system("cls")
         print("[1] - Create Project")
         print("[2] - Search Project")
-        print("[3] - Status")
-        print("[4] - DevSetup")
+        print("[3] - DevSetup")
         print("[99] - Exit")
 
     def get_option(self):
@@ -31,7 +30,7 @@ class Menu:
             create_project = CreateProject()
             create_project.create()
 
-        if option == "2":
+        elif option == "2":
             open_project = OpenProject()
             open_project.create()
 
@@ -44,7 +43,7 @@ class CreateProject:
             print("Create Project")
             print("Please provide the programming language and project name.")
             print("[99] - Exit")
-            answer = input(f"{INPUT_COLOR}: {RESET_COLOR}").lower()
+            answer = input(f"{INPUT_COLOR}: {RESET_COLOR}")
             print(f"{answer}")
 
             if answer == "99":
@@ -56,7 +55,7 @@ class CreateProject:
 
     def run(self, answer: str) -> str:
         try:
-            lang = answer.split()[0]
+            lang = answer.split()[0].lower()
             name = answer.split()[1]
         except IndexError:
             return "Missing programming language or project name."
@@ -110,7 +109,7 @@ class OpenProject:
             print("Open Project")
             print("Please provide the project name.")
             print("[99] - Exit")
-            answer = input(f"{INPUT_COLOR}: {RESET_COLOR}").lower()
+            answer = input(f"{INPUT_COLOR}: {RESET_COLOR}")
             print(f"{answer}")
 
             if answer == "99":
