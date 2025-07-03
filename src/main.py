@@ -31,6 +31,10 @@ class Menu:
             create_project = CreateProject()
             create_project.create()
 
+        if option == "2":
+            open_project = OpenProject()
+            open_project.create()
+
 
 class CreateProject:
     def create(self):
@@ -96,6 +100,39 @@ int main(int argc, char *argv[])
             return "Project created successfully."
 
         return "An error occurred. Please restart CLITool."
+
+
+class OpenProject:
+    def create(self):
+        os.system("cls")
+
+        while True:
+            print("Open Project")
+            print("Please provide the project name.")
+            print("[99] - Exit")
+            answer = input(f"{INPUT_COLOR}: {RESET_COLOR}").lower()
+            print(f"{answer}")
+
+            if answer == "99":
+                return
+
+            result = self.run(answer)
+            os.system("cls")
+            print(f"{OUTPUT_COLOR}{result}{RESET_COLOR}")
+
+    def run(self, answer: str) -> str:
+        try:
+            name = answer.split()[0]
+        except IndexError:
+            return "Missing the project name."
+
+        path = Path().parent
+
+        if Path(path).exists():
+            os.system(f"powershell -Command cd {path.absolute()}; code {name}")
+            return "Project found."
+        else:
+            return "Project not found."
 
 
 if __name__ == "__main__":
