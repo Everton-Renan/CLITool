@@ -8,6 +8,7 @@ RESET_COLOR = '\033[0m'
 OUTPUT_COLOR = '\033[34m'
 LANGUAGES = ["python", "php", "c"]
 DEVSETUP_LANGUAGES = ["python", "php"]
+path = str()
 
 
 class Menu:
@@ -23,7 +24,7 @@ class Menu:
         option = " "
 
         while option not in "1234" and option not in "99":
-            option = input(f"{INPUT_COLOR}: {RESET_COLOR}")
+            option = input(f"{INPUT_COLOR}{path}: {RESET_COLOR}")
 
         return option
 
@@ -40,6 +41,10 @@ class Menu:
             dev_setup = DevSetup()
             dev_setup.create()
 
+        elif option == "4":
+            global path
+            path = askdirectory()
+
 
 class CreateProject:
     def create(self):
@@ -54,11 +59,11 @@ class CreateProject:
             if answer == "99":
                 return
 
-            result = self.run(answer)
+            result = self.run(answer, path)
             os.system("cls")
             print(f"{OUTPUT_COLOR}{result}{RESET_COLOR}")
 
-    def run(self, answer: str) -> str:
+    def run(self, answer: str, path: str) -> str:
         try:
             lang = answer.split()[0].lower()
             name = answer.split()[1]
@@ -68,7 +73,7 @@ class CreateProject:
         if lang not in LANGUAGES:
             return "Unsupported programming language."
 
-        path = Path().parent / f"{name}" / "src"
+        path += fr"\{name}\src"
 
         if Path(path).exists():
             return "A project with this name already exists."
@@ -119,20 +124,20 @@ class OpenProject:
             if answer == "99":
                 return
 
-            result = self.run(answer)
+            result = self.run(answer, path)
             os.system("cls")
             print(f"{OUTPUT_COLOR}{result}{RESET_COLOR}")
 
-    def run(self, answer: str) -> str:
+    def run(self, answer: str, path: str) -> str:
         try:
             name = answer.split()[0]
         except IndexError:
             return "Missing the project name."
 
-        path = Path().parent
+        project_path = Path(path) / f"{name}"
 
-        if Path(path).exists():
-            os.system(f"powershell -Command cd {path.absolute()}; code {name}")
+        if Path(project_path).exists():
+            os.system(f"powershell -Command cd {project_path}; code {name}")
             return "Project found."
         else:
             return "Project not found."
@@ -151,11 +156,11 @@ class DevSetup():
             if answer == "99":
                 return
 
-            result = self.run(answer)
+            result = self.run(answer, path)
             os.system("cls")
             print(f"{OUTPUT_COLOR}{result}{RESET_COLOR}")
 
-    def run(self, answer: str) -> str:
+    def run(self, answer: str, path: str) -> str:
         try:
             lang = answer.split()[0]
         except IndexError:
@@ -166,10 +171,10 @@ class DevSetup():
 
         if lang == "python":
 
-            path = Path(__file__).parent / "requirements.txt"
+            requirements_path = Path(path) / "requirements.txt"
 
-            if path.exists():
-                os.system(f"powershell pip install -r {path}")
+            if requirements_path.exists():
+                os.system(f"powershell pip install -r {requirements_path}")
                 return "Packages installed successfully."
             else:
                 return "No requirements.txt found."
