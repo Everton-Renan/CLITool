@@ -2,12 +2,18 @@ import os
 from pathlib import Path
 from tkinter.filedialog import askdirectory
 
+import requests
+from dotenv import load_dotenv
+
+load_dotenv()
+
 INPUT_COLOR = '\033[32m'
 ERROR_COLOR = '\033[31m'
 RESET_COLOR = '\033[0m'
 OUTPUT_COLOR = '\033[34m'
 LANGUAGES = ["python", "php", "c"]
 DEVSETUP_LANGUAGES = ["python", "php"]
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 path = str()
 
 
@@ -18,12 +24,13 @@ class Menu:
         print("[2] - Search Project")
         print("[3] - DevSetup")
         print("[4] - Select Path")
+        print("[5] - GitStatus")
         print("[99] - Exit")
 
     def get_option(self):
         option = " "
 
-        while option not in "1234" and option not in "99":
+        while option not in "12345" and option not in "99":
             option = input(f"{INPUT_COLOR}{path}: {RESET_COLOR}")
 
         return option
@@ -44,6 +51,10 @@ class Menu:
         elif option == "4":
             global path
             path = askdirectory()
+
+        elif option == "5":
+            gitstatus = GitStatus()
+            gitstatus.create()
 
 
 class CreateProject:
@@ -187,6 +198,83 @@ class DevSetup():
                 return "PHP not found."
 
         return "An error occurred. Please restart CLITool."
+
+
+class GitStatus():
+    def create(self):
+        os.system("cls")
+
+        while True:
+            print("GitHub Status")
+            print("Please provide the username.")
+            print("[99] - Exit")
+            answer = input(f"{INPUT_COLOR}: {RESET_COLOR}")
+
+            if answer == "99":
+                return
+
+            result = self.run(answer)
+            os.system("cls")
+
+            if not isinstance(result, str):
+                print(f"{OUTPUT_COLOR}Name: {str(result['name'])}\n"
+                      f"Followers: {str(result['followers'])}\n"
+                      f"Public Repositories: {str(result['public_repositories'])}\n"
+                      f"Private Repositories: {str(result['private_repositories'])}{RESET_COLOR}")
+            else:
+                print(f"{result}")
+
+    def run(self, answer: str):
+        try:
+            username = answer.split()[0]
+        except IndexError:
+            return "Missing the username."
+
+        github_client = GitHubClient()
+        response = github_client.get_user(username)
+
+        if isinstance(response, str):
+            return response
+        else:
+            try:
+                private_repositories = str(response["total_private_repos"])
+            except KeyError:
+                private_repositories = "None"
+
+            user = {
+                "name": str(response["name"]),
+                "followers": str(response["followers"]),
+                "public_repositories": str(response["public_repos"]),
+                "private_repositories": private_repositories
+            }
+
+            return user
+
+
+class GitHubClient():
+    def __init__(self):
+        self.token = GITHUB_TOKEN
+        self.headers = {
+            "Accept": "application/vnd.github+json",
+            "Authorization": f"Bearer {self.token}",
+            "X-GitHub-Api-Version": "2022-11-28"
+        }
+
+    def get_user(self, username: str):
+        if not self.token:
+            return "Error: GITHUB_TOKEN is missing. Make sure it is set in your .env file."
+
+        try:
+            response = requests.get(f"https://api.github.com/users/{username}",
+                                    headers=self.headers)
+            response.raise_for_status()
+        except requests.exceptions.HTTPError as error:
+            return error
+
+        except requests.exceptions.ConnectionError as error:
+            return error
+
+        return response.json()
 
 
 if __name__ == "__main__":
