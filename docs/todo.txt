@@ -29,7 +29,9 @@
 	Recebe uma linguagem e um termo e abre a documentação oficial no navegador
 
 5. GitStatus: Mostra as estatísticas do GitHub
-	Puxa seu número de repositórios, seguidores, contribuições e linguagens mais usadas.
+	Puxa seu número de repositórios, seguidores e nome.
+
+6. Testador de API
 
 Escolha do diretorio.
 	ele sempre ira executar em um diretorio fixo que o usuario escolheu,
