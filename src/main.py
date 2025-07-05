@@ -181,7 +181,7 @@ class DevSetup():
 
         elif lang == "php":
 
-            if os.system("powershell php -S localhost:8000"):
+            if os.system("powershell php -S localhost:8000") == 0:
                 return "Server up."
             else:
                 return "PHP not found."
