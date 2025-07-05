@@ -25,6 +25,12 @@
 	Python: cria um venv e instala dependencias caso haja um arquivo requirements.txt
 	PHP: php -S localhost:8000
 
+4. DocSearch - Buscador automatico de documentação oficial
+	Recebe uma linguagem e um termo e abre a documentação oficial no navegador
+
+5. GitStatus: Mostra as estatísticas do GitHub
+	Puxa seu número de repositórios, seguidores, contribuições e linguagens mais usadas.
+
 Escolha do diretorio.
 	ele sempre ira executar em um diretorio fixo que o usuario escolheu,
 	mas pode ser alterado para outro usando o cd
