@@ -1,4 +1,5 @@
 import os
+import webbrowser
 from pathlib import Path
 from tkinter.filedialog import askdirectory
 
@@ -25,12 +26,13 @@ class Menu:
         print("[3] - DevSetup")
         print("[4] - Select Path")
         print("[5] - GitStatus")
+        print("[6] - DocSearch")
         print("[99] - Exit")
 
     def get_option(self):
         option = " "
 
-        while option not in "12345" and option not in "99":
+        while option not in "123456" and option not in "99":
             option = input(f"{INPUT_COLOR}{path}: {RESET_COLOR}")
 
         return option
@@ -55,6 +57,10 @@ class Menu:
         elif option == "5":
             gitstatus = GitStatus()
             gitstatus.create()
+
+        elif option == "6":
+            doc_search = DocSearch()
+            doc_search.create()
 
 
 class CreateProject:
@@ -275,6 +281,48 @@ class GitHubClient():
             return error
 
         return response.json()
+
+
+class DocSearch():
+    def create(self):
+        os.system("cls")
+
+        while True:
+            print("DocSearch")
+            print("Please provide the programming language and the term.")
+            print("The term does not need to be sent to the C language.")
+            print("[99] - Exit")
+            answer = input(f"{INPUT_COLOR}: {RESET_COLOR}")
+
+            if answer == "99":
+                return
+
+            result = self.run(answer)
+            os.system("cls")
+            print(f"{OUTPUT_COLOR}{result}{RESET_COLOR}")
+
+    def run(self, answer: str):
+        try:
+            lang = answer.split()[0].lower()
+            if not lang == "c":
+                term = answer.split()[1].lower()
+        except IndexError:
+            return "Missing programming language or term."
+
+        if lang not in LANGUAGES:
+            return "Unsupported programming language."
+
+        if lang == "python":
+            webbrowser.open(
+                f"https://docs.python.org/3/search.html?q={term}")
+            return "Browser started."
+        elif lang == "php":
+            webbrowser.open(
+                f"https://www.php.net/search.php#gsc.q={term}")
+            return "Browser started."
+        elif lang == "c":
+            webbrowser.open("https://devdocs.io/c/")
+            return "Browser started."
 
 
 if __name__ == "__main__":
