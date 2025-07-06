@@ -1,7 +1,7 @@
 import os
 import webbrowser
 from pathlib import Path
-from tkinter.filedialog import askdirectory
+from tkinter.filedialog import askdirectory, askopenfilename
 
 import requests
 from dotenv import load_dotenv
@@ -27,12 +27,13 @@ class Menu:
         print("[4] - Select Path")
         print("[5] - GitStatus")
         print("[6] - DocSearch")
+        print("[7] - APITester")
         print("[99] - Exit")
 
     def get_option(self):
         option = " "
 
-        while option not in "123456" and option not in "99":
+        while option not in "1234567" and option not in "99":
             option = input(f"{INPUT_COLOR}{path}: {RESET_COLOR}")
 
         return option
@@ -61,6 +62,10 @@ class Menu:
         elif option == "6":
             doc_search = DocSearch()
             doc_search.create()
+
+        elif option == "7":
+            api_tester = APITester()
+            api_tester.create()
 
 
 class CreateProject:
@@ -323,6 +328,82 @@ class DocSearch():
         elif lang == "c":
             webbrowser.open("https://devdocs.io/c/")
             return "Browser started."
+
+
+class APITester():
+    def create(self):
+        os.system("cls")
+
+        while True:
+            print("APITester")
+            print("Please, select the api file.")
+            print("[1] - Select File")
+            print("[99] - Exit")
+
+            answer = input(f"{INPUT_COLOR}: {RESET_COLOR}")
+
+            if answer == "99":
+                return
+
+            if answer != "1":
+                os.system("cls")
+                continue
+
+            file_path = Path(askopenfilename())
+            result = self.run(file_path)
+            os.system("cls")
+            if isinstance(result, dict):
+                self.beautiful_print(result)
+            else:
+                print(f"{OUTPUT_COLOR}{result}{RESET_COLOR}")
+
+    def run(self, file_path: Path):
+        if not file_path.exists():
+            return "Please, select a valid API file."
+
+        with file_path.open("r", encoding="utf8") as file:
+            file_content = file.readlines()
+            headers = dict()
+            url = ""
+
+            for line in file_content:
+                line = line.strip()
+                if line.startswith("-h "):
+                    try:
+                        split_line = line.split(": ", 1)
+                        key = split_line[0]
+                        key = key[3:]
+                        value = split_line[1]
+                        headers[key] = value
+                    except IndexError:
+                        return f"Invalid header format: {line}."
+
+                elif line.startswith("https"):
+                    url = line.strip()
+
+        if not url:
+            return "Missing the URL."
+
+        try:
+            response = requests.get(url, headers=headers)
+            response.raise_for_status()
+        except requests.exceptions.HTTPError as error:
+            return error
+
+        except requests.exceptions.ConnectionError as error:
+            return error
+
+        except Exception as error:
+            return error
+
+        try:
+            return response.json()
+        except ValueError:
+            return response.text
+
+    def beautiful_print(self, obj: dict):
+        for k, v in obj.items():
+            print(f"{OUTPUT_COLOR}{k}: {v}{RESET_COLOR}")
 
 
 if __name__ == "__main__":
