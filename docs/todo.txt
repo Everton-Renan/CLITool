@@ -1,5 +1,5 @@
-1. Criar projetos padr�o
-	Cria pastas e arquivos j� preenchidos
+1. Criar projetos padrao
+	Cria pastas e arquivos ja preenchidos
 	Linguagens: Python, PHP, C.
 	Python:
 		if __name__ == "__main__":
@@ -19,7 +19,7 @@
 		}
 
 2. Busca e abertura de projetos
-	envia o nome do projeto e ele � aberto no VSCode ou VS2022
+	envia o nome do projeto e ele e aberto no VSCode
 
 3. Cria um ambiente virtual python ou sobe um servidor php
 	Python: cria um venv e instala dependencias caso haja um arquivo requirements.txt
@@ -34,5 +34,4 @@
 6. Testador de API
 
 Escolha do diretorio.
-	ele sempre ira executar em um diretorio fixo que o usuario escolheu,
-	mas pode ser alterado para outro usando o cd
+	A escolha do diretorio acontece por meio de uma GUI.
