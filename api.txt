@@ -1,0 +1,3 @@
+-h Accept: application/json
+-h Authorization: <YOUR-TOKEN>
+https://api.example.com/resource
