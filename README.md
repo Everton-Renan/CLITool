@@ -67,6 +67,12 @@ php echo
 c printf
 ```
 
+## Documentações
+As documentações acessadas pela ferramenta podem ser encontradas nos seguintes sites:
+https://docs.python.org/3/
+https://www.php.net/
+https://devdocs.io/
+
 ## Estrutura de Pastas
 ```bash
 CLITool/
